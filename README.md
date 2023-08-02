@@ -1,2 +1,2 @@
-# microgram
+# Microgram
 Microgram app.
