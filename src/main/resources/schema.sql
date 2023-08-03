@@ -5,7 +5,7 @@ CREATE TABLE follow (
                         created_at timestamp
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "users" (
                         id integer PRIMARY KEY,
                         username varchar(255),
                         password varchar(255),
