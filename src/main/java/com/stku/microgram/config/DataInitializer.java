@@ -36,7 +36,7 @@ public class DataInitializer implements CommandLineRunner {
         User user2 = new User();
         user2.setId(UUID.randomUUID().toString());
         user2.setUsername("user2");
-        user2.setPassword(encoder.encode("password2"));
+        user2.setPassword("password2");
         user2.setEmail("user2@example.com");
         user2.setEnabled(true);
         userService.createUser(user2);
