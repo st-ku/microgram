@@ -1,6 +1,6 @@
 package com.stku.microgram.rest;
 
-import com.stku.microgram.model.Content;
+import com.stku.microgram.entity.Content;
 import com.stku.microgram.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

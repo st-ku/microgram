@@ -1,4 +1,4 @@
-package com.stku.microgram.model;
+package com.stku.microgram.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,20 +10,29 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
-@Table(name = "content")
+@Table(name = "post")
 @Data
-public class Content {
+public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String title;
+    private String body;
+
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "content_link")
-    private String contentLink;
+    private String status;
+
+    @Column(name = "created_at")
+    private Long createdAt;
+
+    @Column(name = "updated_at")
+    private Long updatedAt;
 }
-

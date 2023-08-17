@@ -1,6 +1,6 @@
 package com.stku.microgram.service;
 
-import com.stku.microgram.model.Post;
+import com.stku.microgram.entity.Post;
 import com.stku.microgram.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

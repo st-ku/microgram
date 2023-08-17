@@ -1,7 +1,10 @@
 package com.stku.microgram.repository;
 
-import com.stku.microgram.model.User;
+import com.stku.microgram.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByUsername(String name);
 }

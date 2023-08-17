@@ -1,6 +1,6 @@
 package com.stku.microgram.rest;
 
-import com.stku.microgram.model.Follow;
+import com.stku.microgram.entity.Follow;
 import com.stku.microgram.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

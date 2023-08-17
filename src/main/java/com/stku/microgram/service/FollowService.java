@@ -1,6 +1,6 @@
 package com.stku.microgram.service;
 
-import com.stku.microgram.model.Follow;
+import com.stku.microgram.entity.Follow;
 import com.stku.microgram.repository.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
