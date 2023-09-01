@@ -1,16 +1,14 @@
 package com.stku.microgram.rest;
 
 import com.stku.microgram.entity.Post;
+import com.stku.microgram.entity.User;
 import com.stku.microgram.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Integer id) {
+    public Post getPostById(@PathVariable String id) {
         return postService.getPostById(id);
     }
 
@@ -31,19 +29,19 @@ public class PostController {
         return postService.getAllPosts();
     }
 
-    @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+    @PostMapping(consumes = {"multipart/form-data"})
+    public Post createPost(@ModelAttribute Post post, @RequestParam("files") MultipartFile[] files, @AuthenticationPrincipal UserDetails userDetails) {
+        return postService.createPost(post, files, (User) userDetails);
     }
 
-    @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Integer id, @RequestBody Post post) {
-        return postService.updatePost(id, post);
+    @PutMapping()
+    public Post updatePost(@ModelAttribute Post post, @RequestParam("files") MultipartFile[] files, @AuthenticationPrincipal UserDetails userDetails) {
+        return postService.updatePost(post, files, (User) userDetails);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Integer id) {
-        postService.deletePost(id);
+    public void deletePost(@PathVariable String id, @AuthenticationPrincipal UserDetails userDetails) {
+        postService.deletePost(id, (User) userDetails);
     }
 }
 

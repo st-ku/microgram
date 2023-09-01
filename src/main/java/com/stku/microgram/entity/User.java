@@ -1,13 +1,10 @@
 package com.stku.microgram.entity;
 
 import com.stku.microgram.model.InternalUser;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,11 +18,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails, InternalUser, Serializable {
+    @Id
     private String id;
     private String username;
     private String password;
-    @Id
     private String email;
     @Column(name = "created_at")
     private Long createdAt;
@@ -59,5 +58,9 @@ public class User implements UserDetails, InternalUser, Serializable {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public User(String id) {
+        this.id = id;
     }
 }

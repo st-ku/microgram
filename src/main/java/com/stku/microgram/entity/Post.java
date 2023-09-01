@@ -1,16 +1,13 @@
 package com.stku.microgram.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -18,10 +15,11 @@ import java.io.Serializable;
 public class Post implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    @NotNull
+    private String id;
+    @NotNull
     private String title;
+    @NotNull
     private String body;
 
     @ManyToOne
@@ -35,4 +33,7 @@ public class Post implements Serializable {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+    @ElementCollection
+    private Collection<String> fileUrls;
 }
