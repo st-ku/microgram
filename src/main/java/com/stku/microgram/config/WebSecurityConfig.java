@@ -28,7 +28,8 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(withDefaults())
                 .authenticationProvider(authProvider())
-                .logout(LogoutConfigurer::permitAll);
+                .logout(LogoutConfigurer::permitAll)
+        .csrf().disable().httpBasic();
         return http.build();
     }
 
