@@ -1,16 +1,12 @@
 package com.stku.microgram.rest;
 
 import com.stku.microgram.entity.Follow;
+import com.stku.microgram.entity.User;
 import com.stku.microgram.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,14 +27,14 @@ public class FollowController {
         return followService.getAllFollows();
     }
 
-    @PostMapping
-    public Follow createFollow(@RequestBody Follow follow) {
-        return followService.createFollow(follow);
+    @PostMapping("/{userId}")
+    public Follow createFollow(@PathVariable String userId, @AuthenticationPrincipal UserDetails userDetails) {
+        return followService.createFollow(userId, (User) userDetails);
     }
 
-    @PutMapping("/{id}")
-    public Follow updateFollow(@PathVariable Long id, @RequestBody Follow follow) {
-        return followService.updateFollow(id, follow);
+    @PutMapping
+    public Follow updateFollow(@RequestBody Follow follow, @AuthenticationPrincipal UserDetails userDetails) {
+        return followService.updateFollow(follow, (User) userDetails);
     }
 
     @DeleteMapping("/{id}")
