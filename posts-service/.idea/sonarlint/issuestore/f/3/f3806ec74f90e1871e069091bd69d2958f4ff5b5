@@ -1,0 +1,16 @@
+
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(½û“úÿÿÿÿ8Ãç„ 1
+g	java:S1126"FDefine and throw a dedicated exception instead of using a generic one.(½û“úÿÿÿÿ8Äç„ 1
+g	java:S112>"FDefine and throw a dedicated exception instead of using a generic one.(½û“úÿÿÿÿ8Äç„ 1
+m
+java:S1192"KDefine a constant instead of duplicating this literal "ROLE_ADMIN" 4 times.(óÃá»ùÿÿÿÿ8Äç„ 1
+‘
+java:S1192"oDefine a constant instead of duplicating this literal "You are not authorized to access this resource" 3 times.(½û“úÿÿÿÿ8Åç„ 1
+M
+java:S2175"+A "Collection<>" cannot contain a "String".(óÃá»ùÿÿÿÿ8Ùç„ 1
+t
+java:S6204("RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ÒÌÒŒıÿÿÿÿ8«ñ 1
+M
+java:S21755"+A "Collection<>" cannot contain a "String".(óÃá»ùÿÿÿÿ8Úç„ 1
+M
+java:S2175="+A "Collection<>" cannot contain a "String".(•Öïøÿÿÿÿ8·æ¼ 1
