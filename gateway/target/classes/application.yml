@@ -2,17 +2,20 @@ server:
   port: 8000
 
 zuul:
-  prefix: /api
   routes:
     user-service:
-      path: /user/**
-      url: http://localhost:8082/user
-    feed-service:
-      path: /feed/**
-      url: http://localhost:8081/feed
+      path: /user
+      url: http://localhost:8082
+    feed-service-feed:
+      path: /feed
+      url: http://localhost:8081
+    feed-service-follow:
+      path: /follow/**
+      url: http://localhost:8081/follow
     posts-service:
-      path: /post/**
-      url: http://localhost:8083/post
+      path: /post
+      url: http://localhost:8083
+  sensitive-headers: Cookie,Set-Cookie
 
 endpoints:
   trace:

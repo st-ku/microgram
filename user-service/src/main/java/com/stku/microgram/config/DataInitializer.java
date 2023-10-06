@@ -20,7 +20,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createStubData();
+        //  createStubData();
     }
 
     private void createStubData() {

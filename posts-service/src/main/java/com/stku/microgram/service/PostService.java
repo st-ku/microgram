@@ -41,7 +41,7 @@ public class PostService {
         post.setCreatedAt(new Date().getTime());
         List<String> photoUrls = uploadToCloudinary(files);
         post.setFileUrls(photoUrls);
-        return postRepository.save(post);
+        return postRepository.saveAndFlush(post);
     }
 
     private List<String> uploadToCloudinary(MultipartFile[] files) {
