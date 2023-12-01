@@ -3,9 +3,16 @@ package com.stku.microgram.service;
 import com.stku.microgram.entity.User;
 import com.stku.microgram.model.InternalUser;
 import com.stku.microgram.model.SimpleUserModel;
+import com.stku.microgram.model.UserDTO;
 import com.stku.microgram.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,10 +26,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    private final String queueName = "users.auth";
 
     public User getUserById(String id, User activeUser) {
         if (!id.equals(activeUser.getId()) && !activeUser.getAuthorities().contains("ROLE_ADMIN")) {
@@ -78,5 +89,38 @@ public class UserService implements UserDetailsService {
         simpleUserModel.setEmail(user.getEmail());
         return simpleUserModel;
     }
+
+    private boolean isAuth(String username, String password) {
+        UserDetails userDetails = loadUserByUsername(username);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(password, userDetails.getPassword());
+    }
+
+    @RabbitListener(queues = queueName)
+    public void processMessage(@Header(value = AmqpHeaders.REPLY_TO, required = false) String senderId,
+                               @Header(value = AmqpHeaders.CORRELATION_ID, required = false) String correlationId,
+                               UserDTO request) {
+        try {
+            boolean isAuth = isAuth(request.name(), request.password());
+            if (senderId != null && correlationId != null) {
+
+                this.rabbitTemplate.convertAndSend(senderId, isAuth, message -> {
+                    MessageProperties properties = message.getMessageProperties();
+                    properties.setCorrelationId(correlationId);
+                    return message;
+                });
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            this.rabbitTemplate.convertAndSend(senderId, false, message -> {
+                MessageProperties properties = message.getMessageProperties();
+                properties.setCorrelationId(correlationId);
+                return message;
+            });
+        }
+
+    }
 }
+
+
 

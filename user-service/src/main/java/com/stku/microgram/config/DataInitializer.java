@@ -15,12 +15,10 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private PasswordEncoder encoder;
 
     @Override
     public void run(String... args) {
-        //  createStubData();
+        createStubData();
     }
 
     private void createStubData() {
@@ -31,7 +29,9 @@ public class DataInitializer implements CommandLineRunner {
         user1.setPassword("password1");
         user1.setEmail("user1@example.com");
         user1.setEnabled(true);
-        userService.createUser(user1);
+        if (userService.loadUserByUsername(user1.getUsername()) == null) {
+            userService.createUser(user1);
+        }
 
         User user2 = new User();
         user2.setId(UUID.randomUUID().toString());
@@ -39,7 +39,9 @@ public class DataInitializer implements CommandLineRunner {
         user2.setPassword("password2");
         user2.setEmail("user2@example.com");
         user2.setEnabled(true);
-        userService.createUser(user2);
+        if (userService.loadUserByUsername(user2.getUsername()) == null) {
+            userService.createUser(user2);
+        }
 
         User user3 = new User();
         user3.setId(UUID.randomUUID().toString());
@@ -49,7 +51,9 @@ public class DataInitializer implements CommandLineRunner {
         user3.setEmail("admin@admin.com");
         user3.setRoles(Set.of("ROLE_ADMIN"));
         user3.setCreatedAt(System.currentTimeMillis());
-        userService.createUser(user3);
+        if (userService.loadUserByUsername(user3.getUsername()) == null) {
+            userService.createUser(user3);
+        }
     }
 }
 

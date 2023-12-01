@@ -20,9 +20,7 @@ public class Post implements Serializable {
     @NotNull
     private String body;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String user;
 
     private String status;
 

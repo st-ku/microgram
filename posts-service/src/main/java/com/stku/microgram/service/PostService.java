@@ -1,7 +1,7 @@
 package com.stku.microgram.service;
 
 import com.stku.microgram.entity.Post;
-import com.stku.microgram.entity.User;
+import com.stku.microgram.model.UserDTO;
 import com.stku.microgram.repository.CloudinaryRepository;
 import com.stku.microgram.repository.PostRepository;
 import jakarta.annotation.Resource;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -21,6 +20,8 @@ public class PostService {
     private PostRepository postRepository;
     @Resource
     private CloudinaryRepository cloudinaryRepository;
+    @Resource
+    private UserService userService;
 
     public Post getPostById(String id) {
         Optional<Post> optionalPost = postRepository.findById(id);
@@ -31,13 +32,16 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public List<Post> getAllPostsByUser(User user) {
-        return postRepository.findAllByUser(user);
+    public List<Post> getAllPostsByUser(UserDTO userModel) {
+        return postRepository.findAllByUserId(userModel.name());
     }
 
-    public Post createPost(Post post, MultipartFile[] files, User activeUser) {
+    public Post createPost(Post post, UserDTO userDTO, MultipartFile[] files) {
+        if (!userService.isAuth(userDTO.name(), userDTO.password())) {
+            throw new RuntimeException("You are not authorized to access this resource");
+        }
         post.setId(UUID.randomUUID().toString());
-        post.setUser(activeUser);
+        post.setUserId(userDTO.name());
         post.setCreatedAt(new Date().getTime());
         List<String> photoUrls = uploadToCloudinary(files);
         post.setFileUrls(photoUrls);
@@ -58,9 +62,9 @@ public class PostService {
         return photoUrls;
     }
 
-    public Post updatePost(Post post, MultipartFile[] files, User activeUser) {
+    public Post updatePost(Post post, UserDTO activeUserModel,  MultipartFile[] files) {
         Post currentPost = getPostById(post.getId());
-        if (!currentPost.getUser().getId().equals(activeUser.getId())) {
+        if (!currentPost.getUserId().equals(activeUserModel.name())) {
             throw new RuntimeException("You are not authorized to access this resource");
         }
         List<String> photoUrls = uploadToCloudinary(files);
@@ -69,7 +73,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public void deletePost(String id, User activeUser) {
+    public void deletePost(String id) {
         postRepository.deleteById(id);
     }
 }

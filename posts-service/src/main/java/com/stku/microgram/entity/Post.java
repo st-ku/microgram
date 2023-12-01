@@ -3,11 +3,9 @@ package com.stku.microgram.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -22,10 +20,6 @@ public class Post implements Serializable {
     @NotNull
     private String body;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private String status;
 
     @Column(name = "created_at")
@@ -33,6 +27,9 @@ public class Post implements Serializable {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+    @Column(name = "user_id")
+    private String userId;
 
     @ElementCollection
     private Collection<String> fileUrls;

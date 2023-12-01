@@ -18,16 +18,12 @@ public class Follow implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     @NotNull
-    private User user;
+    private String user;
 
-    @ManyToOne
-    @JoinColumn(name = "followed_user_id", referencedColumnName = "id")
     @NotNull
     @JsonProperty("followed_user")
-    private User followedUser;
+    private String followedUser;
 
     @Column(name = "created_at")
     private Long createdAt;
