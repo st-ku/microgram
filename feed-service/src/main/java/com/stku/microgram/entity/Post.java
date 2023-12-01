@@ -7,8 +7,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Collection;
 
-@Entity
-@Table(name = "post")
 @Data
 public class Post implements Serializable {
 

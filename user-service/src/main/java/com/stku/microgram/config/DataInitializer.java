@@ -4,7 +4,6 @@ import com.stku.microgram.entity.User;
 import com.stku.microgram.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -29,7 +28,11 @@ public class DataInitializer implements CommandLineRunner {
         user1.setPassword("password1");
         user1.setEmail("user1@example.com");
         user1.setEnabled(true);
-        if (userService.loadUserByUsername(user1.getUsername()) == null) {
+        try {
+            if (userService.loadUserByUsername(user1.getUsername()) == null) {
+                userService.createUser(user1);
+            }
+        } catch (Exception e) {
             userService.createUser(user1);
         }
 
@@ -39,7 +42,11 @@ public class DataInitializer implements CommandLineRunner {
         user2.setPassword("password2");
         user2.setEmail("user2@example.com");
         user2.setEnabled(true);
-        if (userService.loadUserByUsername(user2.getUsername()) == null) {
+        try {
+            if (userService.loadUserByUsername(user2.getUsername()) == null) {
+                userService.createUser(user2);
+            }
+        } catch (Exception e) {
             userService.createUser(user2);
         }
 
@@ -51,7 +58,11 @@ public class DataInitializer implements CommandLineRunner {
         user3.setEmail("admin@admin.com");
         user3.setRoles(Set.of("ROLE_ADMIN"));
         user3.setCreatedAt(System.currentTimeMillis());
-        if (userService.loadUserByUsername(user3.getUsername()) == null) {
+        try {
+            if (userService.loadUserByUsername(user3.getUsername()) == null) {
+                userService.createUser(user3);
+            }
+        } catch (Exception e) {
             userService.createUser(user3);
         }
     }

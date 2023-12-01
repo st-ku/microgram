@@ -19,11 +19,11 @@ public class UserService {
         UserDTO userDTO = new UserDTO(username, password);
 
         try {
-            // Sending message and waiting for response
-            Boolean response = (Boolean) rabbitTemplate.convertSendAndReceive(queueName , userDTO);
-
-            // Check if the response is truthy (adjust as needed)
-            return response;
+            Object response = rabbitTemplate.convertSendAndReceive(queueName , userDTO);
+            if (response == null) {
+                return false;
+            }
+            return (Boolean) response;
         } catch (AmqpException e) {
             log.error(e.getMessage());
             return false;

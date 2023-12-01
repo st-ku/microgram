@@ -26,6 +26,11 @@ public class PostController {
         return postService.getAllPosts();
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Post> getAllPostsByUser(@PathVariable String userId) {
+        return postService.getAllPostsByUser(userId);
+    }
+
     @PostMapping(consumes = {"multipart/form-data"})
     public Post createPost(@ModelAttribute Post post, @ModelAttribute UserDTO userDTO, @RequestParam("files") MultipartFile[] files) {
         return postService.createPost(post, userDTO, files);

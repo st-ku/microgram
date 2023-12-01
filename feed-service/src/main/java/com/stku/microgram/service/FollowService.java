@@ -16,6 +16,10 @@ public class FollowService {
 
     @Autowired
     private FollowRepository followRepository;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private UserService userService;
 
     public Follow getFollowById(Long id) {
         Optional<Follow> optionalFollow = followRepository.findById(id);
@@ -28,13 +32,13 @@ public class FollowService {
 
     public Follow createFollow(String userToFollowId, UserDTO activeUser) {
         Follow follow = new Follow();
-        follow.setUser(activeUser.name());
+        follow.setUserId(activeUser.name());
         follow.setFollowedUser(userToFollowId);
         return followRepository.save(follow);
     }
 
     public Follow updateFollow(Follow follow, UserDTO activeUser) {
-        follow.setUser(activeUser.name());
+        follow.setUserId(activeUser.name());
         return followRepository.save(follow);
     }
 
@@ -43,11 +47,14 @@ public class FollowService {
     }
 
     public List<Post> prepareFeed(UserDTO activeUser) {
-        List<Follow> follows = followRepository.findAllByUser(activeUser.name());
+        List<Follow> follows = followRepository.findAllByUserId(activeUser.name());
         List<Post> posts = new LinkedList<>();
-        follows.forEach(follow -> posts.
-                addAll(postService.
-                        getAllPostsByUser(follow.getFollowedUser())));
+        if (userService.isAuth(activeUser.name(), activeUser.password())) {
+            follows.forEach(follow -> posts.
+                    addAll(postService.getAllPostByUser(follow.getFollowedUser())));
+        } else {
+            throw new RuntimeException("You are not authorized to access this resource");
+        }
         return posts;
     }
 }

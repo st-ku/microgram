@@ -32,8 +32,8 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public List<Post> getAllPostsByUser(UserDTO userModel) {
-        return postRepository.findAllByUserId(userModel.name());
+    public List<Post> getAllPostsByUser(String userName) {
+        return postRepository.findAllByUserId(userName);
     }
 
     public Post createPost(Post post, UserDTO userDTO, MultipartFile[] files) {

@@ -19,7 +19,7 @@ public class Follow implements Serializable {
     private Long id;
 
     @NotNull
-    private String user;
+    private String userId;
 
     @NotNull
     @JsonProperty("followed_user")

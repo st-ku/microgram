@@ -5,6 +5,7 @@ import com.stku.microgram.model.UserDTO;
 import com.stku.microgram.service.FollowService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class FeedController {
     private FollowService followService;
 
     @GetMapping
-    public List<Post> getFeed(UserDTO user) {
+    public List<Post> getFeed(@ModelAttribute UserDTO user) {
         return followService.prepareFeed(user);
     }
 }
