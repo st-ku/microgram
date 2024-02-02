@@ -5,7 +5,7 @@ CREATE TABLE "follow" (
   "created_at" timestamp
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "userModel" (
   "id" integer PRIMARY KEY,
   "username" varchar,
   "password" varchar,
@@ -33,10 +33,10 @@ COMMENT ON COLUMN "post"."body" IS 'Content of the post';
 
 COMMENT ON COLUMN "content"."content_link" IS 'Link to attached image file';
 
-ALTER TABLE "post" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "post" ADD FOREIGN KEY ("user_id") REFERENCES "userModel" ("id");
 
-ALTER TABLE "follow" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "follow" ADD FOREIGN KEY ("user_id") REFERENCES "userModel" ("id");
 
-ALTER TABLE "follow" ADD FOREIGN KEY ("followed_user_id") REFERENCES "user" ("id");
+ALTER TABLE "follow" ADD FOREIGN KEY ("followed_user_id") REFERENCES "userModel" ("id");
 
 ALTER TABLE "content" ADD FOREIGN KEY ("post_id") REFERENCES "post" ("id");

@@ -24,3 +24,7 @@ endpoints:
 ribbon:
   eureka:
     enabled: false
+
+spring:
+  application:
+  name: gateway
